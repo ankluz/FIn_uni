@@ -9,16 +9,16 @@ class Table:
     types = {}
 
     def __init__(self, *filepath,name = None, table=None, type_check=False, delimiter_csv=';'):
+        if name:
+            self.table_name = name
         if table:
             self.table = table
             return
-        if name:
-            self.table_name = name
 
         for filename in filepath:
             if not os.path.exists(filename):
                 raise FileNotFoundError
-            if '.csv' in filename:
+            if '.csv' or '.txt' in filename:
                 with open(filename) as f_obj:
                     reader = csv.DictReader(f_obj, delimiter=delimiter_csv)
                     for line in reader:
@@ -57,7 +57,11 @@ class Table:
         for key in self.table.keys():
             if len(self.table[key]) < maximum:
                 for _ in range(maximum - len(self.table[key])):
-                    self.table[key].append("0") if not self.types[key] == "bool" else self.table[key].append(False)
+                    self.table[key].append("nill")
+        for key in self.table.keys():
+            for index,item in enumerate(self.table[key]):
+                if item == "" or item == None:
+                    self.table[key][index] = "nill"
 
     
     def set_types(self, types=None):
@@ -69,31 +73,43 @@ class Table:
                 
                 if self.types[key] == "int":
                     try:
-                        if i == "True":
-                            pack.append(1)
-                        elif i == "False":
-                            pack.append(0)
+                        if i == "nill":
+                            pack.append("nill")
                         else:
-                            pack.append(int(i))
+                            if i == "True":
+                                pack.append(1)
+                            elif i == "False":
+                                pack.append(0)
+                            else:
+                                pack.append(int(i))
                     except:
                         print(f"Неудачная конвертация значения {i} в тип {self.types[key]}, записываем в виде строки...")
                         pack.append(str(i))
 
                 elif self.types[key] == "float":
                     try:
-                        pack.append(float(i))
+                        if i == "nill":
+                            pack.append("nill")
+                        else:
+                            pack.append(float(i))
                     except:
                         print(f"Неудачная конвертация значения {i} в тип {self.types[key]}, записываем в виде строки...")
                         pack.append(str(i))
                 
                 elif self.types[key] == "bool":
                     try:
-                        pack.append('True' if i == "True" or i==1 else 'False')
+                        if i == "nill":
+                            pack.append("nill")
+                        else:
+                            pack.append('True' if i == "True" or i==1 else 'False')
                     except:
                         print(f"Неудачная конвертация значения {i} в тип {self.types[key]}, записываем в виде строки...")
                         pack.append(str(i))
                 else:
-                    pack.append(str(i))    
+                    if i == "nill":
+                            pack.append("nill")
+                    else:
+                        pack.append(str(i))    
             self.table[key] = pack
    
     def type_research(self):
@@ -121,14 +137,14 @@ class Table:
         for item in range(min([len(self.table[n]) for n in self.table.keys()])):
             print("├", end = "─")
             for k in self.table.keys():
-                print("{0:^10}".format(self.table[k][item]),end = "─")
+                print("{0:^10}".format(self.table[k][item] if self.table[k][item] != "nill" else ""),end = "─")
             print("┤")
         print(f"└{'─'*(10*len(self.table.keys()))}{'─'*(len(self.table.keys())+1)}┘")
             
     def get_value(self,index=0,column=None):
         if column:
-            return self.table[column][index]
-        return [self.table[key][index] for key in self.table.keys()]
+            return self.table[column][index] if self.table[column][index] != "nill" else None
+        return [self.table[key][index] if self.table[key][index] != "nill" else None for key in self.table.keys()]
 
     def Table_to_List (self, column = None):
         keys = self.table.keys()
@@ -136,7 +152,7 @@ class Table:
         minimum = min([len(self.table[n]) for n in keys])
         pack = []
         for i in range(minimum):
-            pack.append([self.table[k][i] for k in keys])
+            pack.append([self.table[k][i] if self.table[k][i] != "nill" else None for k in keys])
         return pack
 
     def get_rows_by_number(self, start, stop = None, copy_table=False):
@@ -223,6 +239,32 @@ class Table:
         else:
             self.types = types_dict
         self.set_types()
+    
+    def concat(self,table):
+        pack = {}
+        for key in table.table.keys():
+            pack[key] = []
+        for key in self.table.keys():
+            pack[key] = []
+        for key in self.table.keys():
+            for item in self.table[key]:
+                pack[key].append(item)
+        for key in table.table.keys():
+            for item in table.table[key]:
+                pack[key].append(item)
+        self.table = pack
+
+    def split (self,row_number):
+        pack1,pack2 = {},{}
+        for key in self.table.keys():
+            pack1[key] = []
+            pack2[key] = []
+            for i in range(len(self.table[key])):
+                if i <row_number:
+                    pack1[key].append(self.table[key][i])
+                else:
+                    pack2[key].append(self.table[key][i])
+        return Table(table=pack1),Table(table=pack2)
         
 
 def list_to_Table(keys, List):
@@ -258,6 +300,11 @@ def test():
     print(t.get_column_types())
     print(t)
     t.save_table("C:/Users/ankluz/Desktop/Prakt/3KR/roller.csv")
+    g,a = t.split(2)
+    g.print_table()
+    a.print_table()
+    g.concat(a)
+    g.print_table()
 
 if __name__ == '__main__':
     test()
