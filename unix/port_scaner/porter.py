@@ -1,7 +1,8 @@
-import threading, socket
-counting = 0
+from os import system
+import threading, socket, time, math
 ip = input('Введите ip адрес сканируемого существа: ')
-num = 120
+num = 1285
+floaters = []
 ports = []
 opens = []
 def scaner(rng):
@@ -11,63 +12,53 @@ def scaner(rng):
     global ports
     global opens
     for i in rng:
-        opens = []
         sock = socket.socket()
-        sock.settimeout(0.5)
+        sock.settimeout(0.1)
         # sock.setblocking(1)
         try:
             sock.connect((ip, i))
-        except ConnectionRefusedError:
+            ports.append(i)
+            opens.append(i)
+        except:
             ports.append(1)
             continue
-        except:
-            # print('open port: ',i)
-            ports.append(1)
-            opens.append(i)
 
 
 #range(65535)[1:15]
 
 
 def create_potok(num):#всего потоков 4369
-    f=1
-    shag=int(65535/num)
-
-    potoki={}
+    global floaters
+    shag = int(65535/num)
+    print(shag)
+    
     for i in range(num):
-        spisok=[]
-        for port in range(f, f + shag):
-            spisok.append(port)
-
-        potoki[f"potok_{i}"]= threading.Thread(target = scaner, args = (spisok,), name=f"potok_{i}")#Создание сокетов по номерам с вызовом функции scaner
-        print(f'thread potok_{i} had been created')
-        f+=15
-    for id,_ in potoki.items():
-        potoki[id].start()
-        print(f'thread {id} had been started ')
-
-
+        floaters.append(threading.Thread(target = scaner, args=(range(shag*i+shag)[shag*i:],)))
+        floaters[-1].start()
+        print(f'thread {i} had been started')
+    
+    
 
 
 
 
 def processing():#Заполнение шкалы прогресса
-    global counting
+    counted = 0
     while True:
-        procent = len(ports)/65535
-        procent *= 100
-        procent = int(procent)
-        if procent > counting:
-            counting += 1
-            print('|', end = '')
-            if counting >= 100:
-                break
+        time.sleep(1)
+        if math.floor((len(ports)/65535)*100) > counted:
+            counted =  math.floor((len(ports)/65535)*100)
+            print("|",end="")
+        if counted >= 100:
+            print('//')
+            break
 
 
 
 
 def work():
     create_potok(num)
+    print('loading \\',end='')
     processing()
     print(opens)
 
