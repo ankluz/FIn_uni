@@ -40,7 +40,6 @@ def create_potok(num):#всего потоков 4369
 def processing():#Заполнение шкалы прогресса
     counted = 0
     while True:
-        time.sleep(1)
         if math.floor((len(ports)/65535)*100) > counted:
             counted =  math.floor((len(ports)/65535)*100)
             print("|",end="")
