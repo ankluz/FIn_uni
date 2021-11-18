@@ -30,7 +30,7 @@ def create_potok(num):#всего потоков 4369
     shag = int(65535/num)
     
     for i in range(num):
-        threading.Thread(target = scaner, args=(range(shag*i+shag)[shag*i:],)).start()
+        threading.Thread(target = scaner, args=(range(shag*i+1+shag)[shag*i:],)).start()
     
     
 
