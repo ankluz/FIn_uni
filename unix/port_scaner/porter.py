@@ -30,12 +30,10 @@ def scaner(rng):
 def create_potok(num):#всего потоков 4369
     global floaters
     shag = int(65535/num)
-    print(shag)
     
     for i in range(num):
         floaters.append(threading.Thread(target = scaner, args=(range(shag*i+shag)[shag*i:],)))
         floaters[-1].start()
-        print(f'thread {i} had been started')
     
     
 
