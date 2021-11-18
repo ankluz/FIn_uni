@@ -1,4 +1,3 @@
-from os import system
 import threading, socket, time, math
 ip = input('Введите ip адрес сканируемого существа: ')
 num = 1285
@@ -40,6 +39,7 @@ def create_potok(num):#всего потоков 4369
 def processing():#Заполнение шкалы прогресса
     counted = 0
     while True:
+        time.sleep(1)
         if math.floor((len(ports)/65535)*100) > counted:
             counted =  math.floor((len(ports)/65535)*100)
             print("|",end="")
@@ -52,7 +52,7 @@ def processing():#Заполнение шкалы прогресса
 
 def work():
     create_potok(num)
-    print('loading \\',end='')
+    print('loading \\\\',end='')
     processing()
     print(opens)
 
