@@ -2,7 +2,6 @@ from os import system
 import threading, socket, time, math
 ip = input('Введите ip адрес сканируемого существа: ')
 num = 1285
-floaters = []
 ports = []
 opens = []
 def scaner(rng):
@@ -28,12 +27,10 @@ def scaner(rng):
 
 
 def create_potok(num):#всего потоков 4369
-    global floaters
     shag = int(65535/num)
     
     for i in range(num):
-        floaters.append(threading.Thread(target = scaner, args=(range(shag*i+shag)[shag*i:],)))
-        floaters[-1].start()
+        threading.Thread(target = scaner, args=(range(shag*i+shag)[shag*i:],)).start()
     
     
 
