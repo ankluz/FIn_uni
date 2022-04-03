@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/easy"
+        android:onClick="onFirstLevelMenuClick"
+        android:title="Level 1(easy)"></item>
+    <item
+        android:id="@+id/medium"
+        android:onClick="onSecondLevelMenuClick"
+        android:title="Level 2(medium)"></item>
+    <item
+        android:id="@+id/hard"
+
+        android:onClick="onThirdLevelMenuClick"
+        android:title="Level 3(hard)"></item>
+    <group
+        android:id="@+id/group1">
+        <item
+            android:id="@+id/new_game"
+            android:orderInCategory="1"
+            android:title="New game"
+            android:onClick="onMenuClick">
+        </item>
+        <item
+            android:id="@+id/menu_exit"
+            android:orderInCategory="4"
+            android:title="Exit"
+            android:onClick="onExitMenu">
+        </item>
+    </group>
+
+</menu>
