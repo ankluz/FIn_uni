@@ -1,0 +1,66 @@
+body
+{
+    background-color: #72c1dd;
+}
+
+a
+{
+    text-decoration: none;
+} 
+
+.footer, .foot_text
+{
+    text-align: center;
+}
+
+.registration
+{
+    background-color: #e4eecc;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 10px;
+    border-radius: 10px;
+    height: 50%;
+}
+
+.button_1
+{
+    display: block;
+    margin-top: 1%;
+    margin-left: 41%;
+    background-color: #72c1dd;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    width: 13%;
+    text-align: center;
+}
+
+.td1
+{
+    float: right;
+    text-align: right;
+}
+
+td
+{
+    padding-top: 10px;
+}
+
+input
+{
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+select, textarea
+{
+    resize: none;
+    border-radius: 5px;
+}
+
+.ln, .n, .a
+{
+    width: 100%;
+}
