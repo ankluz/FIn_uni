@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">CoffeMug</string>
-    <string name="greetings">Take a cup of coffee</string>
-    <string name="button">Update The TextView</string>
-    <string name="hint">A name</string>
-</resources>
