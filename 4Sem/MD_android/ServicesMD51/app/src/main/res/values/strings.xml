@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ServicesMD5</string>
+    <string name="background_text">MD5 noFun</string>
+    <string name="service_start">Start Service</string>
+    <string name="bind_service">Bind Service</string>
+    <string name="stop_service">Stop Service</string>
+    <string name="unbind_service">Unbind Service</string>
+</resources>
